@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import Modal from "react-modal";
 import { ToastContainer, toast } from "react-toastify";
-import { IoMdAdd } from "react-icons/io";
+import { IoMdAdd, IoMdClose } from "react-icons/io";
 import { CgTrash } from "react-icons/cg";
+
+import { knapsack } from "./services/knapsack";
 
 import "./styles/global.css";
 import "react-toastify/dist/ReactToastify.css";
@@ -15,6 +17,13 @@ function App() {
   const [name, setName] = useState("");
 
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [isResultsModalOpen, setIsResultsModalOpen] = useState(false);
+
+  const [results, setResults] = useState({
+    orderedDepartsList: [
+    ],
+    totalEarnings: 0,
+  });
 
   function clearForm() {
     setName("");
@@ -41,19 +50,49 @@ function App() {
     clearForm();
   }
 
+  function handleKnapsack() {
+    if (!limit) {
+      toast.dismiss();
+      toast.error("Escolha um limite para efetuar o cálculo.");
+      return;
+    }
+
+    if (departments.length === 0) {
+      toast.dismiss();
+      toast.error("Adicione ao menos um departamento para efetuar o cáculo.");
+      return;
+    }
+
+    try {
+      const res = knapsack(departments, limit);
+      setResults(res);
+      setIsResultsModalOpen(true);
+    } catch {
+      toast.error("Erro ao realizar cálculo, favor tentar novamente.");
+    }
+  }
+
   return (
     <div className="App">
       <input
+        type="number"
+        min="0"
         placeholder="Peso Limite"
         onChange={({ target }) => {
           setLimit(target.value);
         }}
       />
+      <button
+        className="run-btn"
+        onClick={() => handleKnapsack()}
+      >
+        VER RESULTADO
+      </button>
       <div
         className="add-container"
         onClick={() => setIsAddModalOpen(true)}
       >
-        <b>Adicionar Detartamentos</b>
+        <b>Adicionar Departamentos</b>
         <IoMdAdd
           size={20}
           color="green"
@@ -94,17 +133,13 @@ function App() {
               }
             </>
           ) : (
-            <b style={{ textAlign: "center" }}>Você ainda não possui nenhum funcionário</b>
+            <b style={{ textAlign: "center" }}>Você ainda não adicionou nenhum departamento.</b>
           )
         }
       </div>
       <Modal
         id="add"
         isOpen={isAddModalOpen}
-        styles={{
-          width: "50%",
-          height: "50%",
-        }}
         onRequestClose={() => {
           clearForm();
           setIsAddModalOpen(false);
@@ -144,6 +179,69 @@ function App() {
           style={{ color: "red", cursor: "pointer" }}
         >
           Cancelar
+        </b>
+      </Modal>
+      <Modal
+        id="results"
+        isOpen={isResultsModalOpen}
+        onRequestClose={() => {
+          setIsResultsModalOpen(false);
+        }}
+      >
+        <IoMdClose
+          size={20}
+          color="black"
+          style={{
+            position: "absolute",
+            top: 20,
+            right: 20,
+            cursor: "pointer",
+            opacity: 0.5
+          }}
+          onClick={() => setIsResultsModalOpen(false)}
+        />
+        <h1>RESULTADOS</h1>
+        <p>
+          <b>Arrecadação Total: </b>
+          {results.totalEarnings}
+        </p>
+        <p>
+          <b>Sua bagatela: </b>
+          {parseFloat((results.totalEarnings * 0.8).toFixed(2))}
+        </p>
+        <div className="results-departs-list">
+          {
+            results.orderedDepartsList.map((item) => {
+              return (
+                <div className="results-departs-item">
+                  <b>{item.department.name}</b>
+                  <p>
+                    <b>Nº Funcionários a Contratar: </b>
+                    {item.amount}
+                  </p>
+                </div>
+              );
+            })
+          }
+        </div>
+        <b
+          style={{
+            color: "red",
+            cursor: "pointer",
+            textAlign: "center",
+          }}
+          onClick={() => {
+            setDepartments([]);
+            setLimit(0);
+            setResults({
+              orderedDepartsList: [
+              ],
+              totalEarnings: 0,
+            });
+            setIsResultsModalOpen(false);
+          }}
+        >
+          CALCULAR NOVAMENTE
         </b>
       </Modal>
       <ToastContainer />

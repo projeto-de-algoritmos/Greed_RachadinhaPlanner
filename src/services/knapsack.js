@@ -19,6 +19,6 @@ export function knapsack(departments, limit) {
 
     return { 
         orderedDepartsList: orderedList, 
-        totalEarnings: earnings,
+        totalEarnings: parseFloat(earnings.toFixed(2)),
     };
 }

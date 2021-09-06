@@ -56,9 +56,9 @@ input::placeholder {
     margin-right: 0.2rem;
 }
 
-.ReactModal__Content#add {
+.ReactModal__Content#add,
+.ReactModal__Content#results {
     width: 90%;
-    height: 90%;
 
     max-width: 300px;
     max-height: 300px;
@@ -69,6 +69,11 @@ input::placeholder {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+}
+
+.ReactModal__Content#results {
+    max-height: unset;
+    max-width: 500px;
 }
 
 .department-list {
@@ -94,4 +99,28 @@ input::placeholder {
     align-items: center;
     justify-content: space-between;
     width: 100%;
+}
+
+.run-btn {
+    margin-top: 1rem;
+    padding: 0.4rem 1rem;
+    border: 0;
+    border-radius: 0.6rem;
+    background-color: red;
+    color: white;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.results-departs-list {
+    display: flex;
+    flex-direction: column;
+    padding: 3rem 0;
+}
+
+.results-departs-list .results-departs-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 1.5rem;
 }
