@@ -1,0 +1,30 @@
+.home-page {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.home-page {
+    width: 100%;
+    max-width: 600px;
+}
+
+.home-page * {
+    text-align: center;
+}
+
+.home-page * + * {
+    margin-top: 1rem;
+}
+
+.home-page a {
+    outline: none;
+    text-decoration: none;
+    color: white;
+    font-weight: 700;
+    padding: 0.8rem 1rem;
+    border-radius: 0.6rem;
+    background-color: red;
+}
