@@ -83,13 +83,13 @@ export function Simulator() {
                     marginBottom: "0.6rem",
                 }}
             >
-                Peso Limite
+                Nº de Segurança:
             </label>
             <input
                 type="number"
                 min="0"
                 value={limit}
-                placeholder="Peso Limite"
+                placeholder="Nº de Segurança"
                 onChange={({ target }) => {
                     setLimit(target.value);
                 }}
@@ -212,13 +212,19 @@ export function Simulator() {
                     }}
                     onClick={() => setIsResultsModalOpen(false)}
                 />
-                <h1>RESULTADOS</h1>
+                <h1
+                    style={{
+                        marginBottom: "5rem"
+                    }}
+                >
+                    RESULTADOS
+                </h1>
                 <p>
                     <b>Arrecadação Total: </b>
                     {results.totalEarnings}
                 </p>
                 <p>
-                    <b>Sua bagatela: </b>
+                    <b>Bagatela da Família: </b>
                     {parseFloat((results.totalEarnings * 0.8).toFixed(2))}
                 </p>
                 <div className="results-departs-list">
@@ -226,7 +232,13 @@ export function Simulator() {
                         results.orderedDepartsList.map((item) => {
                             return (
                                 <div className="results-departs-item">
-                                    <b>{item.department.name}</b>
+                                    <b
+                                        style={{
+                                            color: "green"
+                                        }}
+                                    >
+                                        {item.department.name}
+                                    </b>
                                     <p
                                         style={{
                                             display: "flex",
